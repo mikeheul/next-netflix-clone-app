@@ -86,9 +86,15 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
                   <h3 className="text-xl font-semibold mb-3">Actors</h3>
                   <div className="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-700">
                     {movie.actors.map((actor, index) => (
-                      <div key={index} className="bg-gray-700 rounded-lg p-3 text-sm">
+                      <motion.div
+                        key={index}
+                        className="bg-gray-700 rounded-lg p-3 text-sm"
+                        initial={{ opacity: 0, y: 20 }} // Start with hidden and slightly lower position
+                        animate={{ opacity: 1, y: 0 }} // Move to visible and original position
+                        transition={{ delay: index * 0.1, duration: 0.3 }} // Staggered animation effect for each actor
+                      >
                         {actor}
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>

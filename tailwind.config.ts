@@ -11,9 +11,15 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customRed : '#ff4747'
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'), // Add this line
+  ],
+  variants: {
+    scrollbar: ['rounded'], // To allow rounded scrollbars
+  },
 };
 export default config;

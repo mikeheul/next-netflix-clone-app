@@ -1,67 +1,104 @@
-import { X } from "lucide-react";
+import { X, Clock, Star, Tag } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Clock, Star, Tag } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
+
+interface Movie {
+  title: string;
+  poster: string;
+  ageRating: string;
+  duration: string;
+  genre: string;
+  synopsis: string;
+  actors: string[];
+}
 
 interface MovieModalProps {
-    movie: Movie;
-    onClose: () => void;
+  movie: Movie | null;
+  onClose: () => void;
 }
 
 const MovieModal = ({ movie, onClose }: MovieModalProps) => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (movie) {
-            setIsVisible(true);
-        } else {
-            setTimeout(() => setIsVisible(false), 300);
-        }
-    }, [movie]);
+  useEffect(() => {
+    if (movie) {
+      setIsVisible(true);
+    } else {
+      setTimeout(() => setIsVisible(false), 300);
+    }
+  }, [movie]);
 
-    if (!isVisible) return null;
+  if (!movie || !isVisible) return null;
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out">
-            <div className={`bg-white rounded-lg p-6 relative max-w-3xl w-full mx-4 transform transition-transform duration-300 ease-in-out ${movie ? 'scale-100' : 'scale-95'}`}>
-                <button onClick={onClose} className="absolute top-5 right-5 rounded-full p-1 bg-white text-gray-700 hover:text-gray-900">
-                    <X />
-                </button>
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-80 z-50 max-h-screen flex flex-col items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-700 max-w-4xl w-full relative"
+          >
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 z-20 text-white hover:text-red-500 transition-colors duration-200"
+            >
+              <X size={24} />
+            </button>
+            
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 h-[150px] md:h-full relative">
+                <img
+                  src={movie.poster}
+                  alt={movie.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+              </div>
+              
+              <div className="p-8 md:w-1/2 text-white">
+                <h2 className="text-3xl font-bold mb-4 text-red-500">{movie.title}</h2>
                 
-                <div className="flex flex-col md:flex-row">
-                    <img src={movie.poster} alt={movie.title} className="w-full h-[150px] object-cover md:h-auto object-top md:w-1/3 rounded-lg" />
-                    
-                    <div className="md:ml-6 mt-4 md:mt-0">
-                        <h2 className="text-red-500 text-2xl font-bold">{movie.title}</h2>
-                        
-                        <div className="flex items-center mt-2 text-gray-700">
-                            <Star className="w-5 h-5 mr-1" />
-                            <p>{movie.ageRating}</p>
-                        </div>
-                        <div className="flex items-center mt-2 text-gray-700">
-                            <Clock className="w-5 h-5 mr-1" />
-                            <p>{movie.duration}</p>
-                        </div>
-                        <div className="flex items-center mt-2 text-gray-700">
-                            <Tag className="w-5 h-5 mr-1" />
-                            <p>{movie.genre}</p>
-                        </div>
-                        <p className="mt-4">{movie.synopsis}</p>
-
-                        <div className="mt-4">
-                            <h3 className="font-semibold text-lg">Actors</h3>
-                            <div className="mt-2 max-h-48 overflow-y-auto grid grid-cols-2 gap-4 scrollbar-thin scrollbar-thumb-red-400 scrollbar-track-gray-200 scrollbar-thumb-rounded-full">
-                                {movie.actors.map((actor, index) => (
-                                    <div key={index} className="p-4 rounded-lg shadow">
-                                        <p className="text-gray-800 text-sm">{actor}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <div className="flex items-center">
+                    <Star className="w-5 h-5 mr-1 text-yellow-500" />
+                    <p>{movie.ageRating}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="w-5 h-5 mr-1 text-blue-400" />
+                    <p>{movie.duration}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <Tag className="w-5 h-5 mr-1 text-green-400" />
+                    <p>{movie.genre}</p>
+                  </div>
                 </div>
+                
+                <p className="mb-6 text-gray-300">{movie.synopsis}</p>
+
+                <div>
+                  <h3 className="text-xl font-semibold mb-3">Actors</h3>
+                  <div className="grid grid-cols-2 gap-3 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-700">
+                    {movie.actors.map((actor, index) => (
+                      <div key={index} className="bg-gray-700 rounded-lg p-3 text-sm">
+                        {actor}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
-    );
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 };
 
 export default MovieModal;

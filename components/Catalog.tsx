@@ -43,21 +43,37 @@ const Catalog = ({ movies, onMovieClick }: CatalogProps) => {
             animate={{ opacity: 1 }}
             className='min-h-screen bg-gray-800 p-8'
         >
-        {/* Search Bar */}
-        <motion.div 
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mb-6"
-        >
-            <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                placeholder="Search for a movie..."
-                className="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
-            />
+            {/* Search Bar */}
+            <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="mb-6"
+            >
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search for a movie..."
+                    className="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none"
+                />
             </motion.div>
+            
+            <ReactPaginate
+                previousLabel={'←'}
+                nextLabel={'→'}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={handlePageClick}
+                containerClassName={'flex justify-center my-5 space-x-2'}
+                activeClassName={'text-white bg-red-500'}
+                previousClassName={'px-3 py-1 bg-gray-600 text-white rounded-md cursor-pointer'}
+                nextClassName={'px-3 py-1 bg-gray-600 text-white rounded-md cursor-pointer'}
+                pageClassName={'px-3 py-1 bg-gray-700 text-white rounded-md cursor-pointer'}
+                breakClassName={'px-3 py-1 text-gray-400'}
+            />
     
             <motion.div 
             className='grid gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
@@ -84,21 +100,6 @@ const Catalog = ({ movies, onMovieClick }: CatalogProps) => {
                 transition={{ delay: 0.4 }}
             className="mt-8 flex justify-center"
             >
-            <ReactPaginate
-                previousLabel={'←'}
-                nextLabel={'→'}
-                breakLabel={'...'}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageClick}
-                containerClassName={'flex space-x-2'}
-                activeClassName={'text-white bg-red-500'}
-                previousClassName={'px-3 py-1 bg-gray-600 text-white rounded-md cursor-pointer'}
-                nextClassName={'px-3 py-1 bg-gray-600 text-white rounded-md cursor-pointer'}
-                pageClassName={'px-3 py-1 bg-gray-700 text-white rounded-md cursor-pointer'}
-                breakClassName={'px-3 py-1 text-gray-400'}
-            />
             </motion.div>
         </motion.div>
     );

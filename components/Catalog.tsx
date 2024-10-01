@@ -13,7 +13,7 @@ const Catalog = ({ movies, onMovieClick }: CatalogProps) => {
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [searchQuery, setSearchQuery] = useState<string>('');
 
-    const moviesPerPage: number = 6;
+    const moviesPerPage: number = 9;
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);

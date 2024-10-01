@@ -1,5 +1,5 @@
 // Import necessary modules
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Define a GET function that handles incoming requests
 export async function GET() {
